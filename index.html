@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>REd Hidromçetrica SIL</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/MarkerCluster.css">
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="css/L.Control.Locate.css">
+    <link rel="stylesheet" href="css/leaflet.groupedlayercontrol.css">
+    <link rel="stylesheet" type="text/css" href="css/L.Control.ZoomBar.css" />
+    <link rel="stylesheet" href="css/L.Control.MousePosition.css" />
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/leaflet-search.css" />
+    <link rel="stylesheet" href="css/Control.MiniMap.css" />
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="images/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="images/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
+
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet.markercluster.js"></script>
+    <script src="js/L.Control.Locate.min.js"></script>
+    <script src="js/leaflet.groupedlayercontrol.js"></script>
+    <script type="text/javascript" src="js/L.Control.ZoomBar.js"></script>
+    <script src="js/L.Control.MousePosition.js"></script>
+    <script src="js/leaflet-search.js"></script>
+    <script src="js/Control.MiniMap.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Selecciona el Punto de Aforo de Interes</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="list-btn"><i class="fa fa-list white"></i></a></li>
+                </ul>
+            </div>
+            <!--/.navbar-collapse -->
+        </div>
+    </div>
+
+    <div id="container">
+        <div id="sidebar">
+            <div class="sidebar-wrapper">
+                <div class="panel panel-default" id="features">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Puntos de Aforo
+                            <button type="button" class="btn btn-xs btn-default pull-right" id="sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+                    </div>
+
+
+
+                    <div id="boton">
+                        <button id="richo">Río Ichocollo</button> <br>
+                        <button id="agarganta">Aforador Garganta Larga</button><br>
+                        <button id="bcm">Bocatoma Cabana - Mañazo</button><br>
+                        <button id="bhuat">Bocatoma Huataquita</button><br>
+                        <button id="chuat">Captación Huataquita</button><br>
+                        <button id="bcab">Bocatoma Cabanilla</button><br>
+                        <button id="cncab">Canal Cabana</button><br>
+                        <button id="cnma">Canal Mañazo</button><br>
+                        <button id="byan">Bocatoma Yanarico</button><br>
+                        <button id="byoc">Bocatoma Yocará</button><br>
+                        <button id="bcant">Bocatoma Canteria</button><br>
+                        <button id="csj">Captación Seda Juliaca</button>
+                        <button id="stop">Detener Vuelo</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Control de capas</label>
+                                <div id="out-control"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+                        var richo = [-15.66680, -70.82266];
+                        agarganta = [-15.72068, -70.70347];
+                        bcm = [-15.65959, -70.46939];
+                        bhuat = [-15.65734, -70.46796];
+                        chuat = [-15.67904, -70.40971];
+                        bcab = [-15.67103, -70.38460];
+                        cncab = [-15.70628, -70.35953];
+                        cnma = [-15.70673, -70.35971];
+                        byan = [-15.62643, -70.33333];
+                        byoc = [-15.59562, -70.29974];
+                        bcant = [-15.55887, -70.26945];
+                        csj = [-15.46719, -70.10607];
+
+
+                        document.getElementById('richo').onclick = function() {
+                            map.flyTo(richo, 18);
+                        };
+                        document.getElementById('agarganta').onclick = function() {
+                            map.flyTo(agarganta, 18);
+                        };
+                        document.getElementById('bcm').onclick = function() {
+                            map.flyTo(bcm, 18);
+                        };
+                        document.getElementById('bhuat').onclick = function() {
+                            map.flyTo(bhuat, 18);
+                        };
+                        document.getElementById('chuat').onclick = function() {
+                            map.flyTo(chuat, 18);
+                        };
+                        document.getElementById('bcab').onclick = function() {
+                            map.flyTo(bcab, 18);
+                        };
+                        document.getElementById('cncab').onclick = function() {
+                            map.flyTo(cncab, 18);
+                        };
+                        document.getElementById('cnma').onclick = function() {
+                            map.flyTo(cnma, 18);
+                        };
+                        document.getElementById('byan').onclick = function() {
+                            map.flyTo(byan, 18);
+                        };
+                        document.getElementById('byoc').onclick = function() {
+                            map.flyTo(byoc, 18);
+                        };
+                        document.getElementById('bcant').onclick = function() {
+                            map.flyTo(bcant, 18);
+                        };
+                        document.getElementById('csj').onclick = function() {
+                            map.flyTo(csj, 18);
+                        };
+                        document.getElementById('stop').onclick = function() {
+                            map.stop();
+                        };
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script>
+        //visualización de coordenadas del mouse
+        //L.control.mousePosition().addTo(map);
+        $("#list-btn").click(function() {
+            animateSidebar();
+            return false;
+        });
+
+        $("#nav-btn").click(function() {
+            $(".navbar-collapse").collapse("toggle");
+            return false;
+        });
+
+        $("#sidebar-toggle-btn").click(function() {
+            animateSidebar();
+            return false;
+        });
+
+        $("#sidebar-hide-btn").click(function() {
+            animateSidebar();
+            return false;
+        });
+
+        function animateSidebar() {
+            $("#sidebar").animate({
+                width: "toggle"
+            }, 350, function() {
+                map.invalidateSize();
+            });
+        }
+
+
+        // Configuracion del Marcador
+        var marcador_rojo = L.icon({
+            iconUrl: "./images/red_c_marker.png",
+            iconSize: [20, 20], // size of the icon
+            //shadowSize: [50, 64], // size of the shadow
+            //iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+            //shadowAnchor: [4, 62], // the same for the shadow
+            //popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        var marcador_azul = L.icon({
+            iconUrl: "./images/blue_c_marker.png",
+            iconSize: [20, 20], // size of the icon
+            //shadowSize: [50, 64], // size of the shadow
+            //iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+            //shadowAnchor: [4, 62], // the same for the shadow
+            //popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        var marcador_amarillo = L.icon({
+            iconUrl: "./images/yellow_c_marker.png",
+            iconSize: [20, 20], // size of the icon
+            //shadowSize: [50, 64], // size of the shadow
+            //iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+            //shadowAnchor: [4, 62], // the same for the shadow
+            //popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        // Varios Mapas Base 
+        var Google = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                maxZoom: 22,
+                attribution: '<a style="font-size: 12px;" href="#" target="_blank">© 2023 Google </a>'
+            }),
+            OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '<a style="font-size: 12px; href="http://openstreetmap.org">OpenStreetMap</a>'
+            }),
+            CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            });
+
+
+        // Varios Marcadores segun Estacion de Aforo
+        var Ichocollo = L.marker([-15.66680, -70.82266], {
+            icon: marcador_rojo,
+            draggable: false,
+            attribution: '<a style="font-size: 12px;" href="#" target="_blank">Operación y Mantenimiento </a>',
+            title: "Río Ichocollo"
+        }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/532ddce7-2923-4c65-a12b-8f95c4088471/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+            maxWidth: "auto"
+        });
+        garganta_larga = L.marker([-15.72068, -70.70347], {
+                icon: marcador_rojo,
+                draggable: false,
+                title: "Aforador Garganta Larga",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/a576f07e-f55c-41d2-8161-83497f5c1e6d/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            boca_cabana_mañazo = L.marker([-15.65959, -70.46939], {
+                icon: marcador_rojo,
+                draggable: false,
+                title: "Bocatoma Cabana - Mañazo",
+            }).bindPopup("<iframe width='670' height='320' src='https://datastudio.google.com/embed/reporting/be0b3fe5-cfed-4f9d-9632-46668e0ab318/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            boca_huataquita = L.marker([-15.65734, -70.46796], {
+                icon: marcador_azul,
+                draggable: false,
+                attribution: '<a style="font-size: 12px;" href="#" target="_blank">Operación y Mantenimiento </a>',
+                title: "Bocatoma Huataquita",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/5d9cb5f6-5a8a-457d-88ae-5dd450d0bd58/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            captacion_huataquita = L.marker([-15.67904, -70.40971], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Captación Huataquita - Callapoca",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/79029ba9-6be8-41a9-8e2b-d00f79809adb/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            bocatoma_cabanilla = L.marker([-15.67103, -70.38460], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Bocatoma Cabanilla",
+            }).bindPopup("<iframe width='670' height='320' src='https://datastudio.google.com/embed/reporting/819988fc-fbd0-4f4b-9aff-0f4e19cc49c4/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            canal_cabana = L.marker([-15.70628, -70.35953], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Canal Principal Cabana",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/737ed00c-5b58-42a9-8444-cbbafe8102f8/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            canal_mañazo = L.marker([-15.70673, -70.35971], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Canal Principal Mañazo",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/d21cf873-79d6-457c-8ba4-c7576a0e5a9c/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            bocatoma_yanarico = L.marker([-15.62643, -70.33333], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Bocatoma Yanarico",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/863d79c1-b609-48aa-9c7f-11bc94147cf0/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            bocatoma_yocara = L.marker([-15.59562, -70.29974], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Bocatoma Yocará",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/ab16556c-6c20-4002-90a7-d99c047374b0/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            bocatoma_canteria = L.marker([-15.55887, -70.26945], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Bocatoma Canteria",
+            }).bindPopup("<iframe width='670' height='320' src='https://datastudio.google.com/embed/reporting/3fbba1ab-9326-40e8-a348-3e7c3af06de0/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            captacion_sedaj = L.marker([-15.46719, -70.10607], {
+                icon: marcador_azul,
+                draggable: false,
+                title: "Captación Seda Juliaca",
+            }).bindPopup("<iframe width='600' height='310' src='https://datastudio.google.com/embed/reporting/30c22d30-ec24-4af1-aef9-de74b721b047/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            //### PUNTOS DE AFORO COMPLEMENTARIOS 
+            Canal_Huataquita = L.marker([-15.678822, -70.408825], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Canal Huataquita",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/3c29d201-4e82-4ac9-8833-bbb9b8885859/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            B_CM_CL = L.marker([-15.696447, -70.369613], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Canal de Derivación Cabana  - Mañazo (Sifón - Huataquita)",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/056bb6f6-7255-4638-82ac-9b03891e9a1c/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            rio_verde = L.marker([-15.68485, -70.63999], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Río Verde",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/78452f3c-a74f-4d3f-856c-c0e5c425ad72/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            rio_cerrillos = L.marker([-15.688853, -70.644095], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Río Cerrillos",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/fcf44d45-009c-4e61-98b8-fe3e348acbae/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            AIch_01 = L.marker([-15.59610, -70.94578], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Ichocollo - 01",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/9e995f25-4b5a-4e49-8e55-c578b5410fb4/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            AIch_02 = L.marker([-15.59520, -70.94353], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Ichocollo - 02",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/029e1f37-728a-4178-95b0-d7bdb28781d9/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            AIch_03 = L.marker([-15.60538, -70.92359], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Ichocollo - 03",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/3ee22849-c1c3-4ec8-8c67-af71fef4cc24/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            AIch_04 = L.marker([-15.62367, -70.88908], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Ichocollo - 04",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/9a56b9f7-0923-4c2d-b530-94c6319ddce6/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            AIch_05 = L.marker([-15.65865, -70.82606], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Ichocollo - 05",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/29173a51-b4a8-4764-ade0-a53bc9a9818e/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            almosanche = L.marker([-15.56563, -69.95599], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Almozanche",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/48a41a9c-ee2c-4556-9e88-0cecb1c2f933/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            }),
+            Lim_Cab_Tiracoma = L.marker([-15.677897, -70.320430], {
+                icon: marcador_amarillo,
+                draggable: false,
+                title: "Límite Cabana - Tiracoma",
+            }).bindPopup("<iframe width='600' height='310' src='https://lookerstudio.google.com/embed/reporting/83b9600a-8f95-4a38-b1f4-db0d423ef19e/page/qX5SC' frameborder='0' style='border:0' allowfullscreen></iframe>", {
+                maxWidth: "auto"
+            });
+
+        //Agrupando los Marcadores de Red de Captación
+        var Captacion = L.layerGroup([Ichocollo, garganta_larga, boca_cabana_mañazo]);
+
+        //Agrupando los Marcadores de Red de Distribución
+        var Distribución = L.layerGroup([boca_huataquita, captacion_huataquita, bocatoma_cabanilla, canal_cabana, canal_mañazo, bocatoma_yanarico,
+            bocatoma_yocara, bocatoma_canteria, captacion_sedaj
+        ]);
+
+        //Agrupando los Marcadores de Puntos Complementarios
+        var complementarios = L.layerGroup([rio_verde, rio_cerrillos, B_CM_CL, AIch_01, AIch_02, AIch_03, AIch_04, AIch_05, almosanche, Canal_Huataquita, Lim_Cab_Tiracoma]);
+
+        // Agrpando los Marcadores de Tipo Idea de Proyecto
+
+        //var Idea = L.layerGroup([asillo, acora_totorani, conavire]);
+
+        //Agregando los grupos de Capas al Mapa
+        var map = L.map('map', {
+            center: [-15.67758, -70.39955],
+            zoom: 11,
+            zoomControl: false,
+            //maxBounds: [
+            //surOeste
+            //  [-15.847102, -70.026775],
+            //norEste
+            //[-15.421305, -70.841130]
+            //],
+
+            layers: [Google, Captacion, Distribución, complementarios]
+        });
+
+        //BARRA DE ZOOM
+        var barraZoom = new L.Control.ZoomBar({
+            position: 'topleft'
+        }).addTo(map);
+        //GEOLOCALIZADOR
+        // var ubicacion = L.control.locate({
+        //     position: 'topleft',
+        //     strings: {
+        //         title: "Buscar mi Ubicación"
+        //     }
+        // }).addTo(map);
+
+        // Agrupando los Mapas Base
+        var baseMaps = {
+            "Google Satellite": Google,
+            "OpenStreetMap": OpenStreetMap_Mapnik,
+            "Cartografía Oscura": CartoDB_DarkMatter
+        };
+
+
+
+        // Creando Capas de Marcadores
+        var Capas = {
+            '<img src="./images/red_c_marker.png" width="15" height="15"/> Red de Captación': Captacion,
+            //'<img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png" width="10" height="15"/> Estudios': Estudio,
+            '<img src="./images/blue_c_marker.png" width="15" height="15"/> Red de Distribución': Distribución,
+            '<img src="./images/yellow_c_marker.png" width="15" height="15"/> Puntos Complementarios': complementarios,
+        };
+
+
+        // Creando Control de Capas
+        var control = new L.control.layers(baseMaps, Capas, {
+            position: 'bottomleft',
+            collapsed: false
+        }).addTo(map);
+
+
+
+        //visualización de coordenadas del mouse
+        L.control.mousePosition({
+            position: 'bottomleft',
+        }).addTo(map);
+        //barra de escala
+        L.control.scale({
+            position: 'bottomleft',
+            metric: true,
+        }).addTo(map);
+
+
+        var goo = new L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            foo: 'bar',
+
+        })
+
+
+        var miniMap = new L.Control.MiniMap(goo, {
+            toggleDisplay: true,
+            position: 'bottomright',
+        }).addTo(map);
+
+
+        // Llamamos a getContainer.
+        var htmlObject = control.getContainer();
+
+        function controlFueraMapa() {
+            // Creamos la referencia al nuevo div.
+            var miControl = document.getElementById('out-control');
+            miControl.appendChild(htmlObject);
+        }
+        addEventListener('load', controlFueraMapa);
+
+        //Adicionando Logo Institucional
+
+        L.Control.Watermark = L.Control.extend({
+            onAdd: function(map) {
+                var img = L.DomUtil.create('img');
+                img.src = './images/PEBLT.png';
+                img.style.width = '150px';
+                return img;
+            },
+            onRemove: function(map) {},
+        });
+        L.control.watermark = function(opts) {
+            return new L.Control.Watermark(opts);
+        }
+        L.control.watermark({
+            position: 'topright' //bottomright
+        }).addTo(map);
+
+        // create info legend
+        const legend = L.control({
+            position: "bottomleft"
+        });
+
+        legend.onAdd = function() {
+            let div = L.DomUtil.create("div", "description");
+            L.DomEvent.disableClickPropagation(div);
+            const text =
+                "<b>Importante 🚨 </b><br><br>En este portal se muestra información de la Red Hidrométrica de Captación y Distribución de Agua del Sector Hidráulico Mayor Lagunillas clase 'A' a cargo del proyecto Especial Binacional Lago Titicaca; aprobada bajo Resplucion Administrativa  Nº 017-2021-ANA-AAA.TIT-ALA.J. ";
+            div.insertAdjacentHTML("beforeend", text);
+            return div;
+        };
+        legend.addTo(map);
+    </script>
+</body>
+
+</html>
